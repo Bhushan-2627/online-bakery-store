@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics Dashboard - Sweet Crumbs</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav class="navbar">
+
+            <div class="logo">
+                🍰 Sweet Crumbs
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+
+            <a href="cart.html" class="cart-link">
+                🛒 <span id="cart-count">0</span>
+            </a>
+
+        </nav>
+    </header>
+
+
+    <!-- Dashboard Header -->
+    <section class="analytics-header">
+
+        <h1>📊 Bakery Analytics Dashboard</h1>
+
+        <p>
+            Use sales and customer data to understand performance,
+            identify problems, predict demand and make better decisions.
+        </p>
+
+    </section>
+
+
+    <!-- KPI Cards -->
+    <section class="dashboard-section">
+
+        <div class="kpi-container">
+
+            <div class="kpi-card">
+    <span>💰</span>
+    <h3>Total Sales</h3>
+    <strong id="total-sales">₹0</strong>
+    <p>Current period</p>
+</div>
+
+<div class="kpi-card">
+    <span>🛒</span>
+    <h3>Total Orders</h3>
+    <strong id="total-orders">0</strong>
+    <p>Orders received</p>
+</div>
+
+<div class="kpi-card">
+    <span>👥</span>
+    <h3>Customers</h3>
+    <strong id="total-customers">0</strong>
+    <p>Active customers</p>
+</div>
+
+<div class="kpi-card">
+    <span>⭐</span>
+    <h3>Best Seller</h3>
+    <strong id="best-seller">No orders yet</strong>
+    <p>Highest sales</p>
+</div>
+        </div>
+
+    </section>
+
+
+   
+  
+           <!-- Analysis Types -->
+<section class="dashboard-section">
+
+    <h2>Types of Data Analysis</h2>
+
+    <div class="analysis-container">
+
+        <!-- Descriptive Analysis -->
+        <div class="analysis-card">
+            <h3>📊 Descriptive Analysis</h3>
+
+            <p>
+                Describes what happened in the bakery business
+                using past sales and order data.
+            </p>
+
+            <strong>
+                Example: Monthly sales and total orders.
+            </strong>
+        </div>
+
+
+        <!-- Diagnostic Analysis -->
+        <div class="analysis-card">
+            <h3>🔍 Diagnostic Analysis</h3>
+
+            <p>
+                Helps identify why sales increased or decreased
+                by comparing products, periods and categories.
+            </p>
+
+            <strong>
+                Example: Why weekend sales are higher.
+            </strong>
+        </div>
+
+
+        <!-- Predictive Analysis -->
+        <div class="analysis-card">
+            <h3>🔮 Predictive Analysis</h3>
+
+            <p id="prediction-text">
+                Analyzing historical orders...
+            </p>
+
+            <strong id="prediction-result">
+                Prediction will appear after orders.
+            </strong>
+        </div>
+
+
+       <!-- Prescriptive Analysis -->
+<div class="analysis-card">
+
+    <h3>💡 Prescriptive Analysis</h3>
+
+    <p id="prescriptive-text">
+        Analyzing sales data to generate recommendations...
+    </p>
+
+    <strong id="prescriptive-result">
+        Recommendation will appear here.
+    </strong>
+
+</div>
+
+    </div>
+
+</section>
+
+
+    <!-- Visualization Section -->
+    <section class="dashboard-section visualization-section">
+
+        <h2>Sales Visualizations</h2>
+
+        <div class="charts-container">
+
+            <!-- Bar Chart -->
+            <div class="chart-card">
+
+                <h3>Product Sales</h3>
+
+                <div class="bar-chart" id="product-sales-chart">
+</div>
+
+
+            <!-- Line Chart -->
+            <div class="chart-card">
+
+                <h3>Monthly Sales Trend</h3>
+
+                <div class="line-chart" id="monthly-sales-chart">
+
+    <svg
+        id="sales-line-svg"
+        viewBox="0 0 600 220"
+        preserveAspectRatio="none">
+    </svg>
+
+</div>
+
+<div class="chart-labels" id="month-labels">
+</div>
+            </div>
+
+
+            <!-- Pie Chart -->
+           <div class="pie-chart" id="category-pie-chart"></div>
+
+<div class="pie-legend" id="pie-legend"></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Insights -->
+    <section class="dashboard-section insights-section">
+
+        <h2>Business Insights & Recommendations</h2>
+
+        <div class="insights-container">
+
+    <!-- Sales Insight -->
+    <div class="insight-card">
+
+        <h3>📈 Sales Insight</h3>
+
+        <p id="sales-insight">
+            Analyzing sales data...
+        </p>
+
+    </div>
+
+
+    <!-- Diagnostic Insight -->
+    <div class="insight-card">
+
+        <h3>⚠️ Diagnostic Insight</h3>
+
+        <p id="diagnostic-insight">
+            Analyzing product performance...
+        </p>
+
+    </div>
+
+
+    <!-- Prediction -->
+    <div class="insight-card">
+
+        <h3>🔮 Prediction</h3>
+
+        <p id="future-insight">
+            Analyzing future demand...
+        </p>
+
+    </div>
+
+
+    <!-- Recommendation -->
+    <div class="insight-card">
+
+        <h3>💡 Recommendation</h3>
+
+        <p id="recommendation-insight">
+            Generating recommendation...
+        </p>
+
+    </div>
+
+</div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-content">
+
+            <h2>🍰 Sweet Crumbs</h2>
+
+            <p>
+                Freshly baked products made with love.
+            </p>
+
+            <p>
+                © 2026 Sweet Crumbs. All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/cart.js"></script>
+
+<script src="js/analytics.js"></script>
+
+<script>
+
+    function updateDashboard() {
+
+        const data = calculateAnalytics();
+
+
+        // ==============================
+        // UPDATE KPI CARDS
+        // ==============================
+
+        document.getElementById("total-sales").textContent =
+            "₹" + data.totalSales.toLocaleString("en-IN");
+
+        document.getElementById("total-orders").textContent =
+            data.totalOrders;
+
+        document.getElementById("total-customers").textContent =
+            data.totalCustomers;
+
+        document.getElementById("best-seller").textContent =
+            data.bestSeller;
+
+
+        // ==============================
+        // UPDATE BAR CHART
+        // ==============================
+
+        const chart =
+            document.getElementById("product-sales-chart");
+
+        if (!chart) {
+            return;
+        }
+
+        chart.innerHTML = "";
+
+        const productData =
+            Object.entries(data.productSales);
+
+
+        // No orders yet
+        if (productData.length === 0) {
+
+            chart.innerHTML = `
+                <p style="text-align:center; color:#888;">
+                    No sales data available yet.
+                </p>
+            `;
+
+            return;
+        }
+
+
+        // Find maximum quantity
+        const maxQuantity =
+            Math.max(
+                ...productData.map(item => item[1])
+            );
+
+
+        // Create bars
+        productData.forEach(([product, quantity]) => {
+
+            const percentage =
+                (quantity / maxQuantity) * 100;
+
+            chart.innerHTML += `
+
+                <div class="bar-item">
+
+                    <span>
+                        ${product}
+                    </span>
+
+                    <div class="bar">
+
+                        <div style="width:${percentage}%;">
+                            ${quantity} sold
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+        });
+    // ==============================
+    // UPDATE PIE CHART
+    // ==============================
+
+    const pieChart =
+        document.getElementById("category-pie-chart");
+
+    const pieLegend =
+        document.getElementById("pie-legend");
+
+    if (pieChart && pieLegend) {
+
+        const categoryData =
+            Object.entries(data.categorySales);
+
+        if (categoryData.length === 0) {
+
+            pieChart.style.background =
+                "#eee";
+
+            pieLegend.innerHTML = `
+                <span>No category sales yet.</span>
+            `;
+
+        } else {
+
+            const totalCategorySales =
+                categoryData.reduce(
+                    (sum, item) => sum + item[1],
+                    0
+                );
+
+
+            let currentDegree = 0;
+
+            const pieColors = [
+                "#c9784d",
+                "#e5a66d",
+                "#d9b08c",
+                "#ead5c3",
+                "#b86b45"
+            ];
+
+
+            const gradientParts = [];
+
+            pieLegend.innerHTML = "";
+
+
+            categoryData.forEach(
+                ([category, amount], index) => {
+
+                    const percentage =
+                        (amount / totalCategorySales) * 100;
+
+                    const degrees =
+                        (percentage / 100) * 360;
+
+                    const nextDegree =
+                        currentDegree + degrees;
+
+
+                    gradientParts.push(
+                        `${pieColors[index % pieColors.length]}
+                        ${currentDegree}deg
+                        ${nextDegree}deg`
+                    );
+
+
+                    pieLegend.innerHTML += `
+                        <span>
+                            ${category} — ${percentage.toFixed(1)}%
+                        </span>
+                    `;
+
+
+                    currentDegree = nextDegree;
+
+                }
+            );
+
+
+            pieChart.style.background =
+                `conic-gradient(${gradientParts.join(",")})`;
+
+        }
+
+    }
+        // ==============================
+    // UPDATE MONTHLY SALES LINE CHART
+    // ==============================
+
+    const orders = getOrders();
+
+    const monthlySales = Array(12).fill(0);
+
+    orders.forEach(order => {
+
+        const date = new Date(order.orderDate);
+
+        const month = date.getMonth();
+
+        monthlySales[month] += Number(order.total) || 0;
+
+    });
+
+
+    const svg =
+        document.getElementById("sales-line-svg");
+
+    const monthLabels =
+        document.getElementById("month-labels");
+
+
+    if (svg && monthLabels) {
+
+        const maxSales =
+            Math.max(...monthlySales, 1);
+
+        const width = 600;
+        const height = 220;
+
+        const paddingX = 25;
+        const paddingY = 20;
+
+        const usableWidth =
+            width - (paddingX * 2);
+
+        const usableHeight =
+            height - (paddingY * 2);
+
+
+        let points = "";
+
+
+        monthlySales.forEach((sales, index) => {
+
+            const x =
+                paddingX +
+                (index / 11) * usableWidth;
+
+            const y =
+                height -
+                paddingY -
+                (sales / maxSales) * usableHeight;
+
+            points += `${x},${y} `;
+
+        });
+
+
+        svg.innerHTML = `
+
+            <polyline
+                points="${points}"
+                fill="none"
+                stroke="#9b4d33"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+            </polyline>
+
+        `;
+
+
+        const months = [
+            "Jan", "Feb", "Mar", "Apr",
+            "May", "Jun", "Jul", "Aug",
+            "Sep", "Oct", "Nov", "Dec"
+        ];
+
+
+        monthLabels.innerHTML = "";
+
+        months.forEach(month => {
+
+            monthLabels.innerHTML += `
+                <span>${month}</span>
+            `;
+
+        });
+
+    }
+
+        // ==============================
+    // PREDICTIVE ANALYSIS
+    // ==============================
+
+    const predictionText =
+        document.getElementById("prediction-text");
+
+    const predictionResult =
+        document.getElementById("prediction-result");
+
+    if (predictionText && predictionResult) {
+
+        const orders = getOrders();
+
+        if (orders.length === 0) {
+
+            predictionText.textContent =
+                "Not enough historical order data available.";
+
+            predictionResult.textContent =
+                "Place some orders to generate a prediction.";
+
+        } else {
+
+            const totalSales =
+                orders.reduce(
+                    (sum, order) =>
+                        sum + (Number(order.total) || 0),
+                    0
+                );
+
+
+            const averageOrderValue =
+                totalSales / orders.length;
+
+
+            /*
+             * Simple prediction:
+             * Assume next month will receive
+             * 50% more orders than the current
+             * historical average.
+             */
+
+            const predictedOrders =
+                Math.ceil(orders.length * 1.5);
+
+
+            const predictedSales =
+                averageOrderValue * predictedOrders;
+
+
+            predictionText.textContent =
+                "Based on your historical order data, " +
+                "future demand is estimated using average " +
+                "order value and order frequency.";
+
+
+            predictionResult.textContent =
+                "Predicted next-month sales: ₹" +
+                Math.round(predictedSales)
+                    .toLocaleString("en-IN");
+        }
+
+    }
+        // ==============================
+    // PRESCRIPTIVE ANALYSIS
+    // ==============================
+
+    const prescriptiveText =
+        document.getElementById("prescriptive-text");
+
+    const prescriptiveResult =
+        document.getElementById("prescriptive-result");
+
+
+    if (prescriptiveText && prescriptiveResult) {
+
+        const orders = getOrders();
+
+        if (orders.length === 0) {
+
+            prescriptiveText.textContent =
+                "There are not enough sales records to generate a business recommendation.";
+
+            prescriptiveResult.textContent =
+                "Recommendation: Promote bakery products to generate initial sales.";
+
+        } else {
+
+            const data = calculateAnalytics();
+
+            const bestSeller = data.bestSeller;
+
+            const totalSales = data.totalSales;
+
+            const totalOrders = data.totalOrders;
+
+
+            if (bestSeller !== "No orders yet") {
+
+                prescriptiveText.textContent =
+                    `${bestSeller} is currently your best-selling product based on recorded orders.`;
+
+
+                prescriptiveResult.textContent =
+                    `Recommendation: Increase ${bestSeller} stock and consider promoting it in combo offers.`;
+
+            }
+
+
+            if (totalOrders >= 10 && totalSales >= 5000) {
+
+                prescriptiveText.textContent =
+                    "Sales performance is strong based on the recorded orders.";
+
+                prescriptiveResult.textContent =
+                    "Recommendation: Maintain inventory of high-demand products and introduce targeted promotions.";
+
+            }
+
+        }
+
+    }
+    // ==========================================
+// BUSINESS INSIGHTS
+// ==========================================
+
+const salesInsight =
+    document.getElementById("sales-insight");
+
+const diagnosticInsight =
+    document.getElementById("diagnostic-insight");
+
+const futureInsight =
+    document.getElementById("future-insight");
+
+const recommendationInsight =
+    document.getElementById("recommendation-insight");
+
+
+if (
+    salesInsight &&
+    diagnosticInsight &&
+    futureInsight &&
+    recommendationInsight
+) {
+
+    const orders = getOrders();
+
+    const data = calculateAnalytics();
+
+
+    if (orders.length === 0) {
+
+        salesInsight.textContent =
+            "No sales have been recorded yet.";
+
+        diagnosticInsight.textContent =
+            "More orders are needed to identify product performance.";
+
+        futureInsight.textContent =
+            "Future demand cannot be estimated yet.";
+
+        recommendationInsight.textContent =
+            "Start promoting popular bakery products.";
+
+    } else {
+
+        salesInsight.textContent =
+            `The bakery has generated ₹${data.totalSales.toLocaleString("en-IN")} from ${data.totalOrders} order(s).`;
+
+
+        diagnosticInsight.textContent =
+            `${data.bestSeller} is currently the best-selling product.`;
+
+
+        futureInsight.textContent =
+            "Demand is expected to remain strongest for products with higher recorded sales.";
+
+
+        recommendationInsight.textContent =
+            `Keep additional stock of ${data.bestSeller} and promote it through combo offers.`;
+
+    }
+
+}
+    }
+    
+
+
+    // Run when page loads
+    document.addEventListener(
+        "DOMContentLoaded",
+        updateDashboard
+    );
+
+</script>
+
+</body>
+</html>

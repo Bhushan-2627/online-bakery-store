@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout - Sweet Crumbs</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav class="navbar">
+
+            <div class="logo">
+                🍰 Sweet Crumbs
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+
+            <a href="cart.html" class="cart-link">
+                🛒 <span id="cart-count">0</span>
+            </a>
+
+        </nav>
+    </header>
+
+
+    <!-- Checkout -->
+    <section>
+
+        <h2>Checkout</h2>
+
+        <div class="checkout-container">
+
+            <!-- Customer Details -->
+            <div class="checkout-form">
+
+                <h3>Customer Details</h3>
+
+                <label for="name">Full Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Enter your full name"
+                >
+
+                <label for="phone">Mobile Number</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="Enter your mobile number"
+                >
+
+                <label for="email">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                >
+
+                <label for="address">Delivery Address</label>
+                <textarea
+                    id="address"
+                    rows="4"
+                    placeholder="Enter your delivery address">
+                </textarea>
+
+                <label for="payment">
+                    Payment Method
+                </label>
+
+                <select id="payment">
+
+                    <option value="cod">
+                        Cash on Delivery
+                    </option>
+
+                    <option value="upi">
+                        UPI
+                    </option>
+
+                    <option value="card">
+                        Debit / Credit Card
+                    </option>
+
+                </select>
+
+                <button
+                    class="checkout-btn"
+                    onclick="placeOrder()">
+
+                    Place Order
+
+                </button>
+
+            </div>
+
+
+            <!-- Order Summary -->
+            <div class="checkout-summary">
+
+                <h3>Order Summary</h3>
+
+                <div id="order-items">
+                </div>
+
+                <hr>
+
+                <h3>
+                    Total:
+                    ₹<span id="order-total">0</span>
+                </h3>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-content">
+
+            <h2>🍰 Sweet Crumbs</h2>
+
+            <p>
+                Freshly baked products made with love.
+            </p>
+
+            <p>
+                © 2026 Sweet Crumbs. All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/cart.js"></script>
+
+    <script>
+
+        function loadCheckout() {
+
+            const cart = getCart();
+
+            const orderItems =
+                document.getElementById("order-items");
+
+            const orderTotal =
+                document.getElementById("order-total");
+
+            orderItems.innerHTML = "";
+
+            let total = 0;
+
+
+            cart.forEach(product => {
+
+                const productTotal =
+                    product.price * product.quantity;
+
+                total += productTotal;
+
+                orderItems.innerHTML += `
+                    <p>
+                        ${product.name}
+                        × ${product.quantity}
+                        — ₹${productTotal}
+                    </p>
+                `;
+
+            });
+
+            orderTotal.textContent = total;
+
+        }
+
+
+       function placeOrder() {
+
+    const name =
+        document.getElementById("name").value.trim();
+
+    const phone =
+        document.getElementById("phone").value.trim();
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const address =
+        document.getElementById("address").value.trim();
+
+    const payment =
+        document.getElementById("payment").value;
+
+
+    // Check required details
+    if (name === "" || phone === "" || address === "") {
+
+        alert("Please fill all required details.");
+
+        return;
+    }
+
+
+    // Get current cart
+    const cart = getCart();
+
+
+    // Don't allow empty orders
+    if (cart.length === 0) {
+
+        alert("Your cart is empty.");
+
+        return;
+    }
+
+
+    // Calculate order total
+    let total = 0;
+
+    cart.forEach(product => {
+
+        total += product.price * product.quantity;
+
+    });
+
+
+    // Get existing orders
+    const orders =
+        JSON.parse(localStorage.getItem("bakeryOrders")) || [];
+
+
+    // Create new order
+    const newOrder = {
+
+        orderId: "ORD" + Date.now(),
+
+        customerName: name,
+
+        phone: phone,
+
+        email: email,
+
+        address: address,
+
+        paymentMethod: payment,
+
+        items: cart,
+
+        total: total,
+
+        orderDate: new Date().toISOString()
+
+    };
+
+
+    // Add new order
+    orders.push(newOrder);
+
+
+    // Save orders
+    localStorage.setItem(
+        "bakeryOrders",
+        JSON.stringify(orders)
+    );
+
+
+    // Success message
+    alert(
+        "🎉 Order placed successfully!\n\n" +
+        "Order ID: " + newOrder.orderId +
+        "\nThank you, " + name + "!"
+    );
+
+
+    // Empty cart
+    clearCart();
+
+
+    // Go back to home
+    window.location.href = "index.html";
+
+}
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            loadCheckout
+        );
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sweet Crumbs - Online Bakery Store</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="navbar">
+
+            <div class="logo">
+                🍰 Sweet Crumbs
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+
+           <a href="cart.html" class="cart-link">
+    🛒 <span id="cart-count">0</span>
+</a>
+
+        </nav>
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>Freshly Baked Happiness 🍪</h1>
+
+            <p>
+                Delicious cakes, pastries, breads and cookies
+                made fresh for you every day.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="products.html" class="btn">
+                    Shop Now
+                </a>
+
+                <a href="analytics.html" class="btn secondary-btn">
+                    View Analytics
+                </a>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Categories -->
+    <section class="categories">
+
+        <h2>Our Categories</h2>
+
+        <div class="category-container">
+
+            <div class="category-card">
+                <div class="category-icon">🎂</div>
+                <h3>Cakes</h3>
+                <p>Birthday, chocolate and customized cakes.</p>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">🥐</div>
+                <h3>Pastries</h3>
+                <p>Fresh and delicious pastries for every mood.</p>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">🍞</div>
+                <h3>Breads</h3>
+                <p>Soft, fresh and healthy bakery breads.</p>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">🍪</div>
+                <h3>Cookies</h3>
+                <p>Crispy and tasty cookies baked with care.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Featured Products -->
+    <section class="featured-products">
+
+        <h2>Popular Products</h2>
+
+        <div class="product-container">
+
+            <div class="product-card">
+
+                <div class="product-image">
+                    🎂
+                </div>
+
+                <h3>Chocolate Cake</h3>
+
+                <p>
+                    Rich chocolate cake with creamy frosting.
+                </p>
+
+                <span class="price">₹450</span>
+
+                <button
+                    class="add-cart"
+                    onclick="addToCart('Chocolate Cake', 450)">
+                    Add to Cart
+                </button>
+
+            </div>
+
+
+            <div class="product-card">
+
+                <div class="product-image">
+                    🥐
+                </div>
+
+                <h3>Butter Croissant</h3>
+
+                <p>
+                    Crispy outside and soft inside.
+                </p>
+
+                <span class="price">₹120</span>
+
+                <button
+                    class="add-cart"
+                    onclick="addToCart('Butter Croissant', 120)">
+                    Add to Cart
+                </button>
+
+            </div>
+
+
+            <div class="product-card">
+
+                <div class="product-image">
+                    🍪
+                </div>
+
+                <h3>Chocolate Cookies</h3>
+
+                <p>
+                    Freshly baked cookies with chocolate chips.
+                </p>
+
+                <span class="price">₹180</span>
+
+                <button
+                    class="add-cart"
+                    onclick="addToCart('Chocolate Cookies', 180)">
+                    Add to Cart
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Analytics Introduction -->
+    <section class="analytics-intro">
+
+        <h2>Business Analytics Dashboard</h2>
+
+        <p>
+            Our bakery store uses data analytics to understand
+            sales, customer behaviour and product performance.
+        </p>
+
+        <div class="analysis-container">
+
+            <div class="analysis-card">
+                <h3>📊 Descriptive Analysis</h3>
+                <p>
+                    Understand past sales and product performance.
+                </p>
+            </div>
+
+            <div class="analysis-card">
+                <h3>🔍 Diagnostic Analysis</h3>
+                <p>
+                    Find the reasons behind sales changes.
+                </p>
+            </div>
+
+            <div class="analysis-card">
+                <h3>🔮 Predictive Analysis</h3>
+                <p>
+                    Predict future sales and customer demand.
+                </p>
+            </div>
+
+            <div class="analysis-card">
+                <h3>💡 Prescriptive Analysis</h3>
+                <p>
+                    Suggest actions to improve bakery business.
+                </p>
+            </div>
+
+        </div>
+
+        <a href="analytics.html" class="btn analytics-btn">
+            Open Analytics Dashboard
+        </a>
+
+    </section>
+
+
+    <!-- About Preview -->
+    <section class="about-preview">
+
+        <h2>Why Choose Sweet Crumbs?</h2>
+
+        <div class="features">
+
+            <div>
+                <h3>🥖 Fresh Products</h3>
+                <p>Freshly baked products every day.</p>
+            </div>
+
+            <div>
+                <h3>🚚 Fast Delivery</h3>
+                <p>Quick and reliable delivery service.</p>
+            </div>
+
+            <div>
+                <h3>⭐ Quality Ingredients</h3>
+                <p>We use high-quality ingredients.</p>
+            </div>
+
+            <div>
+                <h3>📈 Data Driven</h3>
+                <p>Business decisions supported by analytics.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-content">
+
+            <h2>🍰 Sweet Crumbs</h2>
+
+            <p>
+                Your online destination for fresh and delicious bakery products.
+            </p>
+
+            <p>
+                © 2026 Sweet Crumbs. All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+   <script src="js/cart.js"></script>
+
+</body>
+</html>

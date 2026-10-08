@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact Us - Sweet Crumbs</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav class="navbar">
+
+            <div class="logo">
+                🍰 Sweet Crumbs
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+
+            <a href="cart.html" class="cart-link">
+                🛒 <span id="cart-count">0</span>
+            </a>
+
+        </nav>
+    </header>
+
+
+    <!-- Contact Header -->
+    <section class="contact-header">
+
+        <h1>Contact Us 📞</h1>
+
+        <p>
+            Have a question? We'd love to hear from you.
+        </p>
+
+    </section>
+
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+
+        <div class="contact-container">
+
+            <!-- Contact Information -->
+            <div class="contact-info">
+
+                <h2>Get In Touch</h2>
+
+                <p>
+                    Contact Sweet Crumbs for orders, product
+                    information or general enquiries.
+                </p>
+
+
+                <div class="contact-item">
+
+                    <div class="contact-icon">
+                        📍
+                    </div>
+
+                    <div>
+                        <h3>Our Location</h3>
+                        <p>
+                            Sweet Crumbs Bakery, Pune, Maharashtra
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="contact-item">
+
+                    <div class="contact-icon">
+                        📞
+                    </div>
+
+                    <div>
+                        <h3>Phone</h3>
+                        <p>
+                            +91 98765 43210
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="contact-item">
+
+                    <div class="contact-icon">
+                        ✉️
+                    </div>
+
+                    <div>
+                        <h3>Email</h3>
+                        <p>
+                            hello@sweetcrumbs.com
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="contact-item">
+
+                    <div class="contact-icon">
+                        🕒
+                    </div>
+
+                    <div>
+                        <h3>Opening Hours</h3>
+                        <p>
+                            Monday – Sunday: 8:00 AM – 9:00 PM
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Contact Form -->
+            <div class="contact-form">
+
+                <h2>Send Us a Message</h2>
+
+                <form onsubmit="sendMessage(event)">
+
+                    <label for="contact-name">
+                        Your Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="contact-name"
+                        placeholder="Enter your name"
+                        required
+                    >
+
+
+                    <label for="contact-email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="contact-email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+
+                    <label for="contact-subject">
+                        Subject
+                    </label>
+
+                    <input
+                        type="text"
+                        id="contact-subject"
+                        placeholder="Enter subject"
+                        required
+                    >
+
+
+                    <label for="contact-message">
+                        Message
+                    </label>
+
+                    <textarea
+                        id="contact-message"
+                        rows="6"
+                        placeholder="Write your message..."
+                        required>
+                    </textarea>
+
+
+                    <button
+                        type="submit"
+                        class="checkout-btn">
+
+                        Send Message
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-content">
+
+            <h2>🍰 Sweet Crumbs</h2>
+
+            <p>
+                Freshly baked products made with love.
+            </p>
+
+            <p>
+                © 2026 Sweet Crumbs. All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/cart.js"></script>
+
+
+    <script>
+
+        function sendMessage(event) {
+
+            event.preventDefault();
+
+            const name =
+                document.getElementById("contact-name").value;
+
+            alert(
+                "Thank you, " +
+                name +
+                "! Your message has been received."
+            );
+
+            event.target.reset();
+        }
+
+    </script>
+
+</body>
+
+</html>

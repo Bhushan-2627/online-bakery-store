@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shopping Cart - Sweet Crumbs</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav class="navbar">
+
+            <div class="logo">
+                🍰 Sweet Crumbs
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+
+            <div class="cart">
+                🛒 <span id="cart-count">0</span>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!-- Cart Section -->
+    <section class="cart-section">
+
+        <h2>Your Shopping Cart 🛒</h2>
+
+        <div id="cart-items">
+            <!-- Products will appear here -->
+        </div>
+
+        <div id="cart-summary">
+            <!-- Total will appear here -->
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-content">
+
+            <h2>🍰 Sweet Crumbs</h2>
+
+            <p>
+                Freshly baked products made with love.
+            </p>
+
+            <p>
+                © 2026 Sweet Crumbs. All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- Cart JavaScript -->
+    <script src="js/cart.js"></script>
+
+
+    <!-- Display Cart -->
+    <script>
+
+        function displayCart() {
+
+            const cart = getCart();
+
+            const cartItems = document.getElementById("cart-items");
+            const cartSummary = document.getElementById("cart-summary");
+
+            cartItems.innerHTML = "";
+            cartSummary.innerHTML = "";
+
+
+            // Empty cart
+            if (cart.length === 0) {
+
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <h3>Your cart is empty 🛒</h3>
+                        <p>Add some delicious bakery products first.</p>
+
+                        <a href="products.html" class="btn">
+                            Browse Products
+                        </a>
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            let total = 0;
+
+
+            // Display each product
+            cart.forEach(product => {
+
+                const productTotal =
+                    product.price * product.quantity;
+
+                total += productTotal;
+
+
+                const item = document.createElement("div");
+
+                item.className = "cart-item";
+
+                item.innerHTML = `
+
+                    <div class="cart-product-info">
+
+                        <h3>${product.name}</h3>
+
+                        <p>₹${product.price} × ${product.quantity}</p>
+
+                    </div>
+
+
+                    <div class="quantity-controls">
+
+                        <button onclick="changeQuantity('${product.name}', -1)">
+                            −
+                        </button>
+
+                        <span>${product.quantity}</span>
+
+                        <button onclick="changeQuantity('${product.name}', 1)">
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <div class="cart-product-total">
+                        ₹${productTotal}
+                    </div>
+
+
+                    <button
+                        class="remove-btn"
+                        onclick="removeFromCart('${product.name}')">
+
+                        Remove
+
+                    </button>
+                `;
+
+
+                cartItems.appendChild(item);
+
+            });
+
+
+            // Cart summary
+            cartSummary.innerHTML = `
+
+                <div class="cart-total">
+
+                    <h2>
+                        Total: ₹${total}
+                    </h2>
+
+                    <div class="cart-actions">
+
+                        <button
+                            class="clear-cart-btn"
+                            onclick="clearCart()">
+
+                            Clear Cart
+
+                        </button>
+
+                        <button
+                            class="checkout-btn"
+                            onclick="checkout()">
+
+                            Proceed to Checkout
+
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+        }
+
+
+        // Checkout button
+       function checkout() {
+
+    const cart = getCart();
+
+    if (cart.length === 0) {
+
+        alert("Your cart is empty. Please add a product first.");
+
+        return;
+    }
+
+    window.location.href = "checkout.html";
+}
+
+
+        // Load cart when page opens
+        document.addEventListener(
+            "DOMContentLoaded",
+            displayCart
+        );
+
+    </script>
+
+</body>
+</html>
