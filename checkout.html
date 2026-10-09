@@ -76,25 +76,16 @@
                     placeholder="Enter your delivery address">
                 </textarea>
 
-                <label for="payment">
-                    Payment Method
-                </label>
+                
+<label for="payment">
+    Payment Method
+</label>
 
-                <select id="payment">
-
-                    <option value="cod">
-                        Cash on Delivery
-                    </option>
-
-                    <option value="upi">
-                        UPI
-                    </option>
-
-                    <option value="card">
-                        Debit / Credit Card
-                    </option>
-
-                </select>
+<select id="payment">
+    <option value="razorpay">
+        Online Payment via Razorpay (UPI, Cards, Netbanking)
+    </option>
+</select>
 
                 <button
                     class="checkout-btn"
@@ -150,159 +141,194 @@
 
 
     <script src="js/cart.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-    <script>
+   
+<script>
+const API_BASE_URL = "http://localhost:3000";
+let isProcessing = false;
 
-        function loadCheckout() {
-
-            const cart = getCart();
-
-            const orderItems =
-                document.getElementById("order-items");
-
-            const orderTotal =
-                document.getElementById("order-total");
-
-            orderItems.innerHTML = "";
-
-            let total = 0;
-
-
-            cart.forEach(product => {
-
-                const productTotal =
-                    product.price * product.quantity;
-
-                total += productTotal;
-
-                orderItems.innerHTML += `
-                    <p>
-                        ${product.name}
-                        × ${product.quantity}
-                        — ₹${productTotal}
-                    </p>
-                `;
-
-            });
-
-            orderTotal.textContent = total;
-
-        }
-
-
-       function placeOrder() {
-
-    const name =
-        document.getElementById("name").value.trim();
-
-    const phone =
-        document.getElementById("phone").value.trim();
-
-    const email =
-        document.getElementById("email").value.trim();
-
-    const address =
-        document.getElementById("address").value.trim();
-
-    const payment =
-        document.getElementById("payment").value;
-
-
-    // Check required details
-    if (name === "" || phone === "" || address === "") {
-
-        alert("Please fill all required details.");
-
-        return;
-    }
-
-
-    // Get current cart
+function loadCheckout() {
     const cart = getCart();
+    const itemsContainer = document.getElementById("order-items");
+    const totalElement = document.getElementById("order-total");
 
-
-    // Don't allow empty orders
-    if (cart.length === 0) {
-
-        alert("Your cart is empty.");
-
-        return;
-    }
-
-
-    // Calculate order total
+    itemsContainer.replaceChildren();
     let total = 0;
 
     cart.forEach(product => {
+        const lineTotal = product.price * product.quantity;
+        total += lineTotal;
 
-        total += product.price * product.quantity;
-
+        const line = document.createElement("p");
+        line.textContent =
+            `${product.name} × ${product.quantity} — ₹${lineTotal}`;
+        itemsContainer.appendChild(line);
     });
 
-
-    // Get existing orders
-    const orders =
-        JSON.parse(localStorage.getItem("bakeryOrders")) || [];
-
-
-    // Create new order
-    const newOrder = {
-
-        orderId: "ORD" + Date.now(),
-
-        customerName: name,
-
-        phone: phone,
-
-        email: email,
-
-        address: address,
-
-        paymentMethod: payment,
-
-        items: cart,
-
-        total: total,
-
-        orderDate: new Date().toISOString()
-
-    };
-
-
-    // Add new order
-    orders.push(newOrder);
-
-
-    // Save orders
-    localStorage.setItem(
-        "bakeryOrders",
-        JSON.stringify(orders)
-    );
-
-
-    // Success message
-    alert(
-        "🎉 Order placed successfully!\n\n" +
-        "Order ID: " + newOrder.orderId +
-        "\nThank you, " + name + "!"
-    );
-
-
-    // Empty cart
-    clearCart();
-
-
-    // Go back to home
-    window.location.href = "index.html";
-
+    totalElement.textContent = total.toFixed(2);
 }
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            loadCheckout
+async function placeOrder() {
+    if (isProcessing) return;
+
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const address = document.getElementById("address").value.trim();
+    const button = document.querySelector(".checkout-btn");
+    const cart = getCart();
+
+    if (!name || !phone || !address) {
+        alert("Please enter your name, phone number and delivery address.");
+        return;
+    }
+
+    if (!/^[0-9+\-\s()]{8,20}$/.test(phone)) {
+        alert("Please enter a valid phone number.");
+        return;
+    }
+
+    if (email && !document.getElementById("email").checkValidity()) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+
+    if (!cart.length) {
+        alert("Your cart is empty.");
+        return;
+    }
+
+    isProcessing = true;
+    button.disabled = true;
+    button.textContent = "Preparing payment...";
+
+    try {
+        const orderResponse = await fetch(
+            `${API_BASE_URL}/api/create-order`,
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    cart,
+                    customer: { name, phone, email, address }
+                })
+            }
         );
 
-    </script>
+        const orderData = await orderResponse.json();
 
+        if (!orderResponse.ok) {
+            throw new Error(orderData.error || "Unable to create order.");
+        }
+
+        const options = {
+            key: orderData.keyId,
+            amount: orderData.amount,
+            currency: orderData.currency,
+            name: "Sweet Crumbs",
+            description: "Bakery order",
+            order_id: orderData.orderId,
+            prefill: { name, email, contact: phone },
+            theme: { color: "#8b4b3e" },
+
+            handler: async function (paymentResponse) {
+                button.textContent = "Verifying payment...";
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/api/verify-payment`,
+                        {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(paymentResponse)
+                        }
+                    );
+
+                    const result = await response.json();
+
+                    if (!response.ok || result.verified !== true) {
+                        alert(
+                            "Payment is not confirmed yet. Do not pay again " +
+                            "immediately. Check the payment status or contact " +
+                            "the store before retrying."
+                        );
+                        return;
+                    }
+
+                    // Local copy for the existing browser-based analytics.
+                    // The Supabase record is the server-side order record.
+                    const orders = JSON.parse(
+                        localStorage.getItem("bakeryOrders") || "[]"
+                    );
+
+                    orders.push({
+                        orderId: paymentResponse.razorpay_order_id,
+                        razorpayPaymentId: paymentResponse.razorpay_payment_id,
+                        customerName: name,
+                        phone,
+                        email,
+                        address,
+                        paymentMethod: "Razorpay",
+                        paymentStatus: "paid",
+                        items: cart,
+                        total: orderData.amount / 100,
+                        orderDate: new Date().toISOString()
+                    });
+
+                    localStorage.setItem("bakeryOrders", JSON.stringify(orders));
+                    clearCart();
+
+                    alert("Payment verified successfully. Thank you, " + name + "!");
+                    window.location.href = "index.html";
+                } catch (error) {
+                    console.error("Verification error:", error);
+                    alert(
+                        "Payment status could not be confirmed. If your account " +
+                        "was debited, do not pay again; contact the store."
+                    );
+                } finally {
+                    isProcessing = false;
+                    button.disabled = false;
+                    button.textContent = "Place Order";
+                }
+            },
+
+            modal: {
+                ondismiss: function () {
+                    isProcessing = false;
+                    button.disabled = false;
+                    button.textContent = "Place Order";
+                }
+            }
+        };
+
+        const checkout = new Razorpay(options);
+
+        checkout.on("payment.failed", function (response) {
+            alert(
+                "Payment failed: " +
+                (response.error?.description || "Please try again.")
+            );
+
+            isProcessing = false;
+            button.disabled = false;
+            button.textContent = "Place Order";
+        });
+
+        checkout.open();
+        button.textContent = "Checkout opened";
+    } catch (error) {
+        console.error("Checkout error:", error);
+        alert(error.message || "Could not start checkout. Please try again.");
+
+        isProcessing = false;
+        button.disabled = false;
+        button.textContent = "Place Order";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", loadCheckout);
+</script>
 </body>
 </html>
