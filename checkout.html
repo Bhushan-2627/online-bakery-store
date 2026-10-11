@@ -75,17 +75,22 @@
                     rows="4"
                     placeholder="Enter your delivery address">
                 </textarea>
+               
+<!-- UPI QR Payment -->
+<div class="qr-payment-section">
+    <h3>Pay Using UPI</h3>
+    <p>Scan this QR code using Google Pay, PhonePe or any UPI app.</p>
 
-                
-<label for="payment">
-    Payment Method
-</label>
+    <div class="qr-image-box">
+        <img
+            src="images/payment-qr.jpeg"
+            alt="UPI Payment QR Code"
+            class="payment-qr-image"
+        >
+    </div>
 
-<select id="payment">
-    <option value="razorpay">
-        Online Payment via Razorpay (UPI, Cards, Netbanking)
-    </option>
-</select>
+</div>
+
 
                 <button
                     class="checkout-btn"
@@ -141,11 +146,9 @@
 
 
     <script src="js/cart.js"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
    
 <script>
-const API_BASE_URL = "https://sweet-crumbs-payment-api.bhushankshirsagar075.workers.dev";
 let isProcessing = false;
 
 function loadCheckout() {
@@ -157,19 +160,18 @@ function loadCheckout() {
     let total = 0;
 
     cart.forEach(product => {
-        const lineTotal = product.price * product.quantity;
+        const lineTotal = Number(product.price) * Number(product.quantity);
         total += lineTotal;
 
         const line = document.createElement("p");
-        line.textContent =
-            `${product.name} × ${product.quantity} — ₹${lineTotal}`;
+        line.textContent = `${product.name} × ${product.quantity} — ₹${lineTotal.toFixed(2)}`;
         itemsContainer.appendChild(line);
     });
 
     totalElement.textContent = total.toFixed(2);
 }
 
-async function placeOrder() {
+function placeOrder() {
     if (isProcessing) return;
 
     const name = document.getElementById("name").value.trim();
@@ -199,132 +201,68 @@ async function placeOrder() {
         return;
     }
 
+    const total = cart.reduce(
+        (sum, product) => sum + Number(product.price) * Number(product.quantity),
+        0
+    );
+
     isProcessing = true;
-    button.disabled = true;
-    button.textContent = "Preparing payment...";
+    if (button) {
+        button.disabled = true;
+        button.textContent = "Placing Order...";
+    }
 
     try {
-        const orderResponse = await fetch(
-            `${API_BASE_URL}/api/create-order`,
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    cart,
-                    customer: { name, phone, email, address }
-                })
-            }
-        );
-
-        const orderData = await orderResponse.json();
-
-        if (!orderResponse.ok) {
-            throw new Error(orderData.error || "Unable to create order.");
+        // Demo-only order record saved in this browser.
+        // QR payment is not automatically checked or verified.
+        const orders = JSON.parse(localStorage.getItem("bakeryOrders") || "[]");
+        if (!Array.isArray(orders)) {
+            throw new Error("Saved order data is invalid.");
         }
 
-        const options = {
-            key: orderData.keyId,
-            amount: orderData.amount,
-            currency: orderData.currency,
-            name: "Sweet Crumbs",
-            description: "Bakery order",
-            order_id: orderData.orderId,
-            prefill: { name, email, contact: phone },
-            theme: { color: "#8b4b3e" },
-
-            handler: async function (paymentResponse) {
-                button.textContent = "Verifying payment...";
-
-                try {
-                    const response = await fetch(
-                        `${API_BASE_URL}/api/verify-payment`,
-                        {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(paymentResponse)
-                        }
-                    );
-
-                    const result = await response.json();
-
-                    if (!response.ok || result.verified !== true) {
-                        alert(
-                            "Payment is not confirmed yet. Do not pay again " +
-                            "immediately. Check the payment status or contact " +
-                            "the store before retrying."
-                        );
-                        return;
-                    }
-
-                    // Local copy for the existing browser-based analytics.
-                    // The Supabase record is the server-side order record.
-                    const orders = JSON.parse(
-                        localStorage.getItem("bakeryOrders") || "[]"
-                    );
-
-                    orders.push({
-                        orderId: paymentResponse.razorpay_order_id,
-                        razorpayPaymentId: paymentResponse.razorpay_payment_id,
-                        customerName: name,
-                        phone,
-                        email,
-                        address,
-                        paymentMethod: "Razorpay",
-                        paymentStatus: "paid",
-                        items: cart,
-                        total: orderData.amount / 100,
-                        orderDate: new Date().toISOString()
-                    });
-
-                    localStorage.setItem("bakeryOrders", JSON.stringify(orders));
-                    clearCart();
-
-                    alert("Payment verified successfully. Thank you, " + name + "!");
-                    window.location.href = "index.html";
-                } catch (error) {
-                    console.error("Verification error:", error);
-                    alert(
-                        "Payment status could not be confirmed. If your account " +
-                        "was debited, do not pay again; contact the store."
-                    );
-                } finally {
-                    isProcessing = false;
-                    button.disabled = false;
-                    button.textContent = "Place Order";
-                }
-            },
-
-            modal: {
-                ondismiss: function () {
-                    isProcessing = false;
-                    button.disabled = false;
-                    button.textContent = "Place Order";
-                }
-            }
+        const orderId = "SC-" + Date.now();
+        const demoOrder = {
+            orderId,
+            customerName: name,
+            phone,
+            email,
+            address,
+            paymentMethod: "UPI QR (manual)",
+            paymentStatus: "pending_manual_verification",
+            items: cart,
+            total: Number(total.toFixed(2)),
+            orderDate: new Date().toISOString(),
+            mode: "DEMO"
         };
 
-        const checkout = new Razorpay(options);
+        orders.push(demoOrder);
+        localStorage.setItem("bakeryOrders", JSON.stringify(orders));
 
-        checkout.on("payment.failed", function (response) {
-            alert(
-                "Payment failed: " +
-                (response.error?.description || "Please try again.")
-            );
+        if (typeof clearCart === "function") {
+            clearCart();
+        } else {
+            localStorage.removeItem("bakeryCart");
+        }
 
-            isProcessing = false;
+        if (typeof updateCartCount === "function") {
+            updateCartCount();
+        }
+
+        if (button) {
+            button.textContent = "Order Placed";
+        }
+
+        alert("Order successful!");
+
+        window.location.href = "index.html";
+    } catch (error) {
+        console.error("Could not save demo order:", error);
+        alert("Could not save the order in this browser. Please try again.");
+        isProcessing = false;
+        if (button) {
             button.disabled = false;
             button.textContent = "Place Order";
-        });
-
-        checkout.open();
-        button.textContent = "Checkout opened";
-    } catch (error) {
-        console.error("Checkout error:", error);
-        alert(error.message || "Could not start checkout. Please try again.");
-
-        isProcessing = false;
-        button.disabled = false;
-        button.textContent = "Place Order";
+        }
     }
 }
 
